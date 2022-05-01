@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 
-const separators = new Set(["\n", "(", ")", " ", ",", ".", ";", ":", "_", "“", "”"]);
+const separators = new Set(["\n", "(", ")", " ", ",", ".", ";", ":", "_", "-", "“", "”"]);
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
