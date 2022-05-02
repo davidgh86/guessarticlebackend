@@ -60,7 +60,7 @@ router.post('/test', authMiddleware,  function(req, res, next) {
   });
 });
 
-router.post('/test', authMiddleware,  function(req, res, next) {
+router.post('/add', authMiddleware,  function(req, res, next) {
   let text = req.body.text;
   let title = req.body.title;
   queue.push({
