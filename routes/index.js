@@ -1,9 +1,14 @@
 var express = require('express');
 var router = express.Router();
+var cron = require('node-cron');
 
-const separators = new Set(["\n", "(", ")", " ", ",", ".", ";", ":", "_", "-", "“", "”"]);
+var authMiddleware = require('../middleware').auth;
 
-const text = [
+const separators = new Set(["\n", "(", ")", " ", ",", ".", ";", ":", "_", "-", "“", "”", "&", "$", "€", "@", "ª", "º", "!", "¡", "?", "¿", "}", "{", "}", "[", "]", "<", ">", "#", "~", "%", "¬", "/", "\\", "=", "\"", "*", "^", "<", "/", ">"]);
+
+const queue = []
+
+let text = [
   "El Hospital de Santa María Magdalena fue un recinto hospitalario fundado en el año 1540 por doña Mencía de Mendoza. Se encuentran a las afueras de la localidad de Fuentidueña, provincia de Segovia, (España). Es un Bien de Interés Cultural del patrimonio histórico de España, su estado es de ruina.\n" +
   "\n" +
   "Historia\n" +
@@ -26,7 +31,14 @@ const text = [
   "\n" +
   "En la capilla, los arcos arruinados se levantaban sobre pilares de columnas dobles adosadas con capitel sencillo de referencia al estilo toscano de la primera mitad del siglo XVI."];
 
-const title = ["Hospital de Santa María Magdalena (Fuentidueña)"]
+let title = ["Hospital de Santa María Magdalena (Fuentidueña)"]
+
+
+cron.schedule('0 0 * * *', () => {
+  let today = queue.shift()
+  text = [today.words]
+  title = [today.title]
+});
 
 /* GET home page. */
 router.get('', function(req, res, next) {
@@ -35,6 +47,30 @@ router.get('', function(req, res, next) {
     separators: [...separators],
     words: getText(text),
     title: getText(title)
+  });
+});
+
+router.post('/test', authMiddleware,  function(req, res, next) {
+  let text = [req.body.text];
+  let title = [req.body.title];
+  res.send({
+    separators: [...separators],
+    words: getText(text),
+    title: getText(title)
+  });
+});
+
+router.post('/test', authMiddleware,  function(req, res, next) {
+  let text = req.body.text;
+  let title = req.body.title;
+  queue.push({
+    words: text,
+    title: title
+  })
+  res.send({
+    separators: [...separators],
+    words: getText([text]),
+    title: getText([title])
   });
 });
 
