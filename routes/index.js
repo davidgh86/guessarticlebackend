@@ -3,18 +3,7 @@ var router = express.Router();
 
 const separators = new Set(["\n", "(", ")", " ", ",", ".", ";", ":", "_", "-", "“", "”"]);
 
-/* GET home page. */
-router.get('/', function(req, res, next) {
-  res.send({
-    separators: [...separators],
-    words: getText()
-  });
-});
-
-function getText(){
-  wordList = 
-  ["Hospital de Santa María Magdalena (Fuentidueña)\n" +
-  "\n" +
+const text = [
   "El Hospital de Santa María Magdalena fue un recinto hospitalario fundado en el año 1540 por doña Mencía de Mendoza. Se encuentran a las afueras de la localidad de Fuentidueña, provincia de Segovia, (España). Es un Bien de Interés Cultural del patrimonio histórico de España, su estado es de ruina.\n" +
   "\n" +
   "Historia\n" +
@@ -36,6 +25,21 @@ function getText(){
   "Se conserva una puerta de acceso en el muro oriental con arco de medio punto y dovelas de buen tamaño.\n" +
   "\n" +
   "En la capilla, los arcos arruinados se levantaban sobre pilares de columnas dobles adosadas con capitel sencillo de referencia al estilo toscano de la primera mitad del siglo XVI."];
+
+const title = ["Hospital de Santa María Magdalena (Fuentidueña)"]
+
+/* GET home page. */
+router.get('', function(req, res, next) {
+  res.set('Access-Control-Allow-Origin', 'http://localhost:8080');
+  res.send({
+    separators: [...separators],
+    words: getText(text),
+    title: getText(title)
+  });
+});
+
+function getText(words){
+  wordList = words;  
 
   for (let separator of separators) {
       wordList = splitWords(wordList, separator);
