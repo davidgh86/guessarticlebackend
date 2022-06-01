@@ -16,5 +16,5 @@ getContent = (async () => {
 	}
 });
 
-export { getContent }
+module.exports = { getContent };
 
