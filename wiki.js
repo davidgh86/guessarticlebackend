@@ -1,6 +1,6 @@
 const wiki = require('wikipedia');
 
-getContent = (async () => {
+async function getContent() {
 	try {
 		wiki.setLang("es")
         const randomTitle = await wiki.random("title")
@@ -14,7 +14,7 @@ getContent = (async () => {
 		console.log(error);
 		//=> Typeof wikiError
 	}
-});
+};
 
-module.exports = { getContent };
+module.exports.getContent = getContent;
 

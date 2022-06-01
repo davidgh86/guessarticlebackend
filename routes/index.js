@@ -10,15 +10,18 @@ const separators = new Set(["\n", "(", ")", " ", ",", ".", ";", ":", "_", "-", "
 
 const queue = []
 
-let today = wiki.getContent()
+let title = []
+let text = [];
 
-let title = [today.title];
+let today = wiki.getContent().then(today => {
+  title = [today.title];
+  text = [today.content];
+})
 
-let text = [today.content];
 
 
-cron.schedule('0 0 * * *', () => {
-  today = wiki.getContent()
+cron.schedule('0 0 * * *', async () => {
+  today = await wiki.getContent()
   text = [today.content]
   title = [today.title]
 });
