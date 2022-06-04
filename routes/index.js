@@ -20,10 +20,11 @@ let today = wiki.getContent().then(today => {
 
 
 
-cron.schedule('0 0 * * *', async () => {
-  today = await wiki.getContent()
-  text = [today.content]
-  title = [today.title]
+cron.schedule('0 0 * * *', function() {
+  wiki.getContent().then((today) => {
+    text = [today.content]
+    title = [today.title]
+  })
 });
 
 
